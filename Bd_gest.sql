@@ -1,13 +1,27 @@
 CREATE DATABASE GestaoConsultas;
 USE GestaoConsultas;
 
+CREATE TABLE Endereco (
+    idEndereco INT AUTO_INCREMENT PRIMARY KEY,
+    rua VARCHAR(45) NOT NULL,
+    bairro VARCHAR(45) NOT NULL,
+    casa VARCHAR(45) NOT NULL
+);
+
+CREATE TABLE Telefone (
+    idTelefone INT AUTO_INCREMENT PRIMARY KEY,
+    numero_alternativo VARCHAR(9) NOT NULL,
+    numero_principal VARCHAR(9) NOT NULL
+);
+
 CREATE TABLE Paciente (
     IDPaciente INT AUTO_INCREMENT PRIMARY KEY,
     Nome VARCHAR(45) NOT NULL,
     DataDeNascimento DATE NOT NULL,
-    Telefone VARCHAR(9),
-    Email VARCHAR(60),
-    Endereco VARCHAR(255)
+    idEndereco INT,
+    idTelefone INT,
+    FOREIGN KEY (idEndereco) REFERENCES Endereco(idEndereco),
+    FOREIGN KEY (idTelefone) REFERENCES Telefone(idTelefone)
 );
 
 CREATE TABLE Especialidade (
@@ -22,7 +36,11 @@ CREATE TABLE Medico (
     Telefone VARCHAR(15),
     Email VARCHAR(60),
     IDEspecialidade INT NOT NULL,
-    FOREIGN KEY (IDEspecialidade) REFERENCES Especialidade(IDEspecialidade)
+    idEndereco INT,
+    idTelefone INT,
+    FOREIGN KEY (IDEspecialidade) REFERENCES Especialidade(IDEspecialidade),
+    FOREIGN KEY (idEndereco) REFERENCES Endereco(idEndereco),
+    FOREIGN KEY (idTelefone) REFERENCES Telefone(idTelefone)
 );
 
 CREATE TABLE Consulta (
@@ -43,5 +61,3 @@ CREATE TABLE Prescricao (
     IDConsulta INT NOT NULL UNIQUE,
     FOREIGN KEY (IDConsulta) REFERENCES Consulta(IDConsulta)
 );
-
-
